@@ -1,4 +1,4 @@
-# JUDUL PROJECT PCD
+# Klasifikasi Citra MRI Otak untuk Membedakan Tumor Glioma dan Non-Tumor Menggunakan Ekstraksi Fitur GLCM serta Perbandingan Metode KNN, SVM, dan Random Forest
 ## Nama Anggota
 ###  M. Alfatih : F1D02410013
 ###  Muhammad Tegar Bijanta : F1D02410081
@@ -11,9 +11,10 @@ Pada project PCD ini, Anda akan melakukan experiment kalsifikasi dengan mengguna
 
 Pemilihan preprocessing haruslah menggunakan preprocessing yang telah Anda lakukan selama praktikum Modul 1 - 5. Setelah itu, Anda akan melakukan feature extraction dan juga pembuatan model klasifikasi.
 Perlu di perhatikan bahwa yang menjadi acuan pada project ini adalah tepatnya pemilihan `preprocessing` dan proses `extraction feature` yang dilakukan. Jadi, Anda tidak perlu khawatir dengan hasil akhir akurasi yang mungkin tidak bagus. Selain itu, untuk melihat pemahaman Anda dalam menganalisis, Anda akan melakukan eksperimen sebanyak 3 kali percobaan dengan notebook yang berbeda (format notebook terdapat pada template). Pada setiap percobaannya, Anda diharuskan melakukan improvement pada setiap preprocessing yang telah Anda buat sebelumnya. Anda dapat melakukan improvement dengan cara menyesuaikan jumlah preprocessing pada setiap percobaan. Misalnya, project Anda akan menggunakan total 5 Preprocessing (pre1, pre2, pre3, pre4, pre 5), maka:
-- Percobaan Pertama (3 Preprocessing menggunakan pre1, pre2)
-- Percobaan Kedua (4 Preprocessing menggunakan pre1, pre2, pre3, pre4)
-- Percobaan Ketiga (5 Preprocessing menggunakan pre1, pre2, pre3, pre4, pre5)
+- Percobaan Pertama (3 Preprocessing menggunakan grayscale, resize, CLAHE (Contrast Limited Adaptive Histogram EqualizatioN))
+- Percobaan Kedua (4 Preprocessing menggunakan grayscale, resize, CLAHE (Contrast Limited Adaptive Histogram EqualizatioN), dan median filter)
+- Percobaan Ketiga (5 Preprocessing menggunakan grayscale, resize, median filter, sobel, dan roberts)
+- Percobaan Keempat (5 Preprocessing menggunakan grayscale, resize, median filter, CLAHE(Contrast Limited Adaptive Histogram Equalization)dan thresholding)
 
 Lalu dari setiap percobaan, lihatlah bagaimana perbedaan akurasinya untuk setiap model, Random Forest berapa, SVM berapa, KNN berapa. Berikut ini adalah Tahapan Umum yang digunakan dalam Machine Learning.
 
