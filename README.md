@@ -240,19 +240,16 @@ Berikut merupakan model yang digunakan:
 
 Gunakan akurasi sebagai metrik dalam menampilkan hasil klasifikasi.
 ```python
-def plot_confusion_matrix(y_true, y_pred, title):
-    cm = confusion_matrix(y_true, y_pred)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm)
-    disp.plot(cmap=plt.cm.Blues)
-    plt.title(title)
-    plt.show()
+rf.fit(X-train, y-train)
+# Train SVM Classifier
+svm.fit(X-train, y-train)
+# Train KNN Classifier
+knn.fit(X-train, y-train)
 
-# Plot confusion matrix for Random Forest
-plot_confusion_matrix(y_test, rf.predict(X_test), "Random Forest Confusion Matrix")
-# Plot confusion matrix for SVM
-plot_confusion_matrix(y_test, svm.predict(X_test), "SVM Confusion Matrix")
-# Plot confusion matrix for KNN
-plot_confusion_matrix(y_test, knn.predict(X_test), "KNN Confusion Matrix")
+def generateClassificationReport(y_true, y_pred):
+	print(classification_report(y_true, y_pred))
+	print(confusion_matrix(y_true, y_pred))
+	print('Accuracy:', accuracy_score(y_true, y_pred))
 ```
 Output: Contoh Classsification Report
 |               | Accuracy | Precision | Recall   | F1-Score |
