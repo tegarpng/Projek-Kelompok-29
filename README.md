@@ -47,7 +47,7 @@ Pada data ini digunakan data yang memiliki background yang semuanya hitam, ini m
 ```
 Output: Contoh Visualisasi Distribusi Data: 
 
-![image](https://github.com/user-attachments/assets/bcf4e18c-d6a5-4627-a4d3-c4a2fdb35e8c)
+<img width="540" height="393" alt="download" src="https://github.com/user-attachments/assets/c44d66d9-a07d-494c-9f3a-62edd20e7924" />
 
 Output: Contoh Sample Data:
 ![image](https://github.com/user-attachments/assets/0084d31f-386e-49f9-9de5-4863ec4d73de)
