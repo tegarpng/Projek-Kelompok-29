@@ -275,5 +275,5 @@ plot_confusion_matrix(y_test, svm.predict(X_test), "SVM Confusion Matrix")
 plot_confusion_matrix(y_test, knn.predict(X_test), "KNN Confusion Matrix")
 ```
 
-Output: Contoh Confusion Matrix
-![image](https://github.com/user-attachments/assets/aec4ac9c-e687-4354-b02d-833caf26db6b)
+Output: Confusion Matrix Percobaan 1
+<img width="1734" height="543" alt="download (8)" src="https://github.com/user-attachments/assets/d666e65e-c971-4d97-bfd4-b0f114ba5fca" />
