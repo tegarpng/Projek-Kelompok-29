@@ -56,16 +56,107 @@ Sample Data Glioma:<img width="1444" height="299" alt="download (6)" src="https:
 Sample Data Notumor:<img width="1403" height="299" alt="download (5)" src="https://github.com/user-attachments/assets/fcaecbdc-f207-4e94-86f1-026eb546a87a" />
 
 ## Preprocessing
-Pada percobaan ini digunakan 
+Pada percobaan ini digunakan preprocessing median, grayscale, resize, sobel, roberts, clahe, dan treshold. Preprocessing ini digunakan pada masing masing percobaan tergantung ketentuan tiap percobaan.
 ``` python
-def prepro1():
-    pass
 
-def prepro2():
-    pass
+def median(image, rowkernel, columnkernel):
+    row, column = int(rowkernel/2), int(columnkernel/2)
+    image_pad = np.pad(image, [(row, row), (column, column)], mode="edge")
+    result = np.zeros(image.shape)
 
-def prepro3():
-    pass
+    for i in range(row, image.shape[0] + row):
+        for j in range(column, image.shape[1] + column):
+            submatrix = image_pad[i-row:i+row+1, j-column:j+column+1]
+            result[i-row, j-column] = np.median(submatrix)
+
+    return result.astype(np.uint8)
+
+def grayscale(image):
+    if len(image.shape) == 3:
+        return cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    return image
+
+def resize(image, target_size):
+    return cv.resize(image, target_size)
+	
+def sobel(image):
+    sobelx = cv.Sobel(image, cv.CV_64F, 1, 0, ksize=3)
+    sobely = cv.Sobel(image, cv.CV_64F, 0, 1, ksize=3)
+    magnitude = np.sqrt(sobelx**2 + sobely**2)
+    magnitude = (magnitude / magnitude.max()) * 255 if magnitude.max() != 0 else magnitude
+    return magnitude.astype(np.uint8)
+
+def roberts(image):
+    kernel_x = np.array([[1, 0], [0, -1]], dtype=np.float64)
+    kernel_y = np.array([[0, 1], [-1, 0]], dtype=np.float64)
+
+    img_f = image.astype(np.float64)
+    gx = cv.filter2D(img_f, -1, kernel_x)
+    gy = cv.filter2D(img_f, -1, kernel_y)
+
+    magnitude = np.sqrt(gx**2 + gy**2)
+    magnitude = (magnitude / magnitude.max()) * 255 if magnitude.max() != 0 else magnitude
+    return magnitude.astype(np.uint8)
+
+def clahe_manual(citra, block_size=32, clip_limit=2.5):
+    height, width = citra.shape
+    hasil = np.zeros_like(citra, dtype=np.uint8)
+
+    for i in range(0, height, block_size):
+        for j in range(0, width, block_size):
+            blok = citra[i:i+block_size, j:j+block_size]
+            h_blok, w_blok = blok.shape
+
+            hist = np.zeros(256, dtype=int)
+            for bi in range(h_blok):
+                for bj in range(w_blok):
+                    hist[blok[bi][bj]] += 1
+
+            total_piksel = h_blok * w_blok
+            limit = int(clip_limit * total_piksel / 256)
+            if limit < 1:
+                limit = 1
+
+            kelebihan = 0
+            for c in range(256):
+                if hist[c] > limit:
+                    kelebihan += hist[c] - limit
+                    hist[c] = limit
+
+            distribusi_rata = kelebihan // 256
+            sisa = kelebihan % 256
+
+            for c in range(256):
+                hist[c] += distribusi_rata
+            for c in range(sisa):
+                hist[c] += 1
+
+            cdf = np.zeros(256, dtype=int)
+            cdf[0] = hist[0]
+            for c in range(1, 256):
+                cdf[c] = cdf[c-1] + hist[c]
+
+            cdf_min = cdf[cdf > 0][0] if len(cdf[cdf > 0]) > 0 else 0
+            cdf_normal = np.zeros(256, dtype=int)
+
+            pembagi = total_piksel - cdf_min
+            for c in range(256):
+                if pembagi > 0:
+                    val = np.round((cdf[c] - cdf_min) * 255 / pembagi)
+                    cdf_normal[c] = int(max(0, min(255, val)))
+                else:
+                    cdf_normal[c] = 0
+
+            for bi in range(h_blok):
+                for bj in range(w_blok):
+                    hasil[i+bi][j+bj] = cdf_normal[blok[bi][bj]]
+
+    return hasil.astype(np.uint8)
+
+def thresholding_manual(image, thresh_value=125):
+    img_thresh = np.zeros_like(image)
+    img_thresh[image > thresh_value] = 255
+    return img_thresh
 ```
 ## Feature Extraction
 Pada tahapan ini, Anda diminta untuk melakukan ekstraksi fitur dengan metode Gray Level Co-occurrence Matrix (GLCM). Dengan GLCM sudut 0, 45, 90, dan 135 derajat, simetris, dan lakukan uji coba dengan distance 1-5. Anda dapat menghitung nilai dari beberapa fitur berikut:
@@ -105,7 +196,7 @@ Dataset = (Dataset - Dataset.mean()) / Dataset.std()
 ```
 
 # Modeling
-Pada tahap ini, Anda diminta untuk membuat model klasifikasi. Berikut merupakan model yang dapat digunakan:
+Berikut merupakan model yang digunakan:
 - K-Nearest Neighbors (KNN)
 - Support Vector Machine (SVM)
 - Random Forest
