@@ -45,26 +45,18 @@ Pada data ini digunakan data yang memiliki background yang semuanya hitam, ini m
 	    print(f"Kelas {u}: {c} gambar")
 	print(f"Total data: {len(data)} gambar")
 ```
-Output: Contoh Visualisasi Distribusi Data: 
+Output: Visualisasi Distribusi Data: 
 
 <img width="540" height="393" alt="download" src="https://github.com/user-attachments/assets/c44d66d9-a07d-494c-9f3a-62edd20e7924" />
 
-Output: Contoh Sample Data:
-![image](https://github.com/user-attachments/assets/0084d31f-386e-49f9-9de5-4863ec4d73de)
+Output: 
 
-# Data Preparation
-## Data Augmentation
-Pada tahapan ini, Anda diwajibkan untuk menerapkan teknik image augmentation untuk menambah jumlah data, HANYA JIKA data Anda berada di bawah rentang 70-100. Anda bisa melakukan image Augmentation dengan teknik yang ada pada Modul 1.
-``` python
-  augmented.data = []
-  augmented.labels = []
-  print(Output: file_name)
-```
-Output: Contoh Image Augmentation
-![image](https://github.com/user-attachments/assets/9ea656a7-a69c-47fa-98fc-2a598b81c3a0)
+Sample Data Glioma:<img width="1444" height="299" alt="download (6)" src="https://github.com/user-attachments/assets/e2f743d6-bc9f-4cfa-8427-c82e4b0dd617" />
+
+Sample Data Notumor:<img width="1403" height="299" alt="download (5)" src="https://github.com/user-attachments/assets/fcaecbdc-f207-4e94-86f1-026eb546a87a" />
 
 ## Preprocessing
-Selanjutnya, ini dia tahapan paling krusial. Anda dapat melakukan teknik preprocessing yang Anda anggap perlu. Jelaskan alasan Anda menggunakan teknik tersebut, Anda wajib menggunakan preprocessing yang ada pada modul-modul yang telah Anda pelajari sebelumnya selama praktikum. Jika Anda merasa preprocessing yang ada pada praktikum tidak sesuai, maka silahkan diskusikan dengan Asisten masing" untuk mendapatkan pencerahan.
+Pada percobaan ini digunakan 
 ``` python
 def prepro1():
     pass
