@@ -252,8 +252,34 @@ def generateClassificationReport(y_true, y_pred):
 	print('Accuracy:', accuracy_score(y_true, y_pred))
 ```
 Output: Contoh Classsification Report
-```python
+```
+------Training Set------
+              precision    recall  f1-score   support
 
+      glioma       0.90      0.97      0.94       242
+     notumor       0.97      0.89      0.93       238
+
+    accuracy                           0.93       480
+   macro avg       0.94      0.93      0.93       480
+weighted avg       0.94      0.93      0.93       480
+
+[[235   7]
+ [ 25 213]]
+Accuracy: 0.9333333333333333
+
+------Testing Set------
+              precision    recall  f1-score   support
+
+      glioma       0.81      0.97      0.88        58
+     notumor       0.96      0.79      0.87        62
+
+    accuracy                           0.88       120
+   macro avg       0.89      0.88      0.87       120
+weighted avg       0.89      0.88      0.87       120
+
+[[56  2]
+ [13 49]]
+Accuracy: 0.875
 ```
 
 # Evaluation
