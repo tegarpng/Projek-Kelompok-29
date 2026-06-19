@@ -4,22 +4,16 @@
 ###  Muhammad Tegar Bijanta : F1D02410081
 ###  Ridho Hidayat : F1D02410089
 
-# Project Overview
-Pada project PCD ini, Anda akan melakukan experiment kalsifikasi dengan menggunakan dataset yang telah Anda siapkan sebelumnya. Hal ini bertujuan untuk:
-- Menguji kemampuan Anda dalam mengimplemetasikan teknik pengolahan citra digital untuk melakukan klasifikasi citra.
-- Memilih tahapan preprocessing yang tepat sesuai dengan karakteristik data yang ada.
+# Deskripsi Projek
+Tumor otak merupakan salah satu penyakit yang paling berbahaya dan mengancam jiwa manusia. Berdasarkan data dari World Health Organization (WHO), tumor otak termasuk dalam 10 besar penyebab kematian akibat kanker di seluruh dunia. Deteksi dini sangat krusial karena semakin cepat tumor teridentifikasi, semakin besar peluang pasien untuk mendapatkan penanganan yang tepat dan meningkatkan angka harapan hidup. Oleh karena itu, kami ingin membuat klasifikasi citra MRI tentang perbedaan otak yang terkena kanker glioma dan yang sehat. Ini diharapkan dapat menjadi deteksi dini terkait tumor glioma pada otak manusia dalam pengecekan MRI. Nanti data MRI ini akan diolah sedemikian rupa untuk membuat model mesin yang mempelajari klasifikasi perbedaan dari tumor glioma dan yang sehat.
 
-Pemilihan preprocessing haruslah menggunakan preprocessing yang telah Anda lakukan selama praktikum Modul 1 - 5. Setelah itu, Anda akan melakukan feature extraction dan juga pembuatan model klasifikasi.
-Perlu di perhatikan bahwa yang menjadi acuan pada project ini adalah tepatnya pemilihan `preprocessing` dan proses `extraction feature` yang dilakukan. Jadi, Anda tidak perlu khawatir dengan hasil akhir akurasi yang mungkin tidak bagus. Selain itu, untuk melihat pemahaman Anda dalam menganalisis, Anda akan melakukan eksperimen sebanyak 3 kali percobaan dengan notebook yang berbeda (format notebook terdapat pada template). Pada setiap percobaannya, Anda diharuskan melakukan improvement pada setiap preprocessing yang telah Anda buat sebelumnya. Anda dapat melakukan improvement dengan cara menyesuaikan jumlah preprocessing pada setiap percobaan. Misalnya, project Anda akan menggunakan total 5 Preprocessing (pre1, pre2, pre3, pre4, pre 5), maka:
+Project ini akan menggunakan total 4 percobaan, maka:
 - Percobaan Pertama (3 Preprocessing menggunakan grayscale, resize, CLAHE (Contrast Limited Adaptive Histogram EqualizatioN))
 - Percobaan Kedua (4 Preprocessing menggunakan grayscale, resize, CLAHE (Contrast Limited Adaptive Histogram EqualizatioN), dan median filter)
 - Percobaan Ketiga (5 Preprocessing menggunakan grayscale, resize, median filter, sobel, dan roberts)
 - Percobaan Keempat (5 Preprocessing menggunakan grayscale, resize, median filter, CLAHE(Contrast Limited Adaptive Histogram Equalization)dan thresholding)
 
-Lalu dari setiap percobaan, lihatlah bagaimana perbedaan akurasinya untuk setiap model, Random Forest berapa, SVM berapa, KNN berapa. Berikut ini adalah Tahapan Umum yang digunakan dalam Machine Learning.
-
 # IMPORT LIBRARY
-Anda mengimport library yang dibutuhkan di cell code ini, Anda tidak harus mengikuti dan menggunakan seluruh library yang ada pada template. Library pada template adalah library umum yang sekiranya sering digunakan pada Machine Learning dalam konteks klasifikasi, jadi gunakan library yang diperlukan saja ya.
 ``` python
   import os
   import matplotlib.pyplot as plt
@@ -38,18 +32,18 @@ Anda mengimport library yang dibutuhkan di cell code ini, Anda tidak harus mengi
   import seaborn as sns
 ```
 # Load Data
-Setelah import library, dilanjutkan dengan tahapan membaca dataset. Pada praktikum modul 1 - 5 Anda pernah membaca beberapa image ke dalam code. Pada project ini, Anda tidak hanya akan membaca 1 atau 2 image saja, tetapi ratusan bahkan ribuan image pada dataset yang Anda gunakan. Bukan hanya image, tapi Anda juga akan berurusan dengan label setiap image, jadi sesuaikan code pada template dengan dataset label (label adalah nama setiap folder pada dataset Anda yang berisi image) yang Anda miliki. Pertama-tama lakukanlah data loading (baca dataset) beserta labelnya, Anda bisa melakukan penyeragaman ukuran dari dataset dengan resize, jika ukuran setiap image berbeda pada datset Anda. Misalnya ada yang 100x200, 300x100 maka Anda harus mengubahnya ke ukuran yang sama misalnya 100x100 atau 150x150. Sekedar informasi semakin besar ukuran setiap image, maka proses loadingnya pun akan semakin lama, jadi usahakan juga ukuran image rendah, CMIIW~
+Setelah import library, dilanjutkan dengan tahapan membaca dataset. Pada data ini digunakan 300 data pada tiap kelas. Dan pada setiap kelas citra akan dikenakan grayscale dan resize sebesar 256x256, ini dibuat agar ukuran citra yang diproses akan memiliki ukuran yang sama. Pada load data ini, digunakan data yang urut dari data 1 hingga seterusnya (data ini diurutkan pada proses perulangan di kode).
 ``` python
-  data = []
-  labels = []
-  file_name = []
+  data = 600
+  labels = glioma dan tumor
 ```
 ## Data Understanding
-Selanjutnya, Anda diminta untuk melakukan eksplorasi data untuk memahami karakteristik data yang digunakan. Anda dapat menampilkan jumlah data, karakteristik data (kondisi background, noise, pencahyaan, dll), distribusi data, sampel data, dan lainnya. Hal ini bertujuan untuk memahami data yang akan digunakan dalam proses klasifikasi, sehingga dapat memilih teknik preprocessing yang tepat ataupun penanganan jika terdapat data yang tidak seimbang. Berikut ini contohnya:
+Pada data ini digunakan data yang memiliki background yang semuanya hitam, ini mempermudah dalam penggunaan percobaan yang akan dilakukan. Noise pada data ini memiliki noise tidak terlalu banyak. Distribusi data dari setiap kelas juga sudah ditentukan sebanyak 300. 
 ``` python
-  jumlah.data = []
-  jumlah.labels = []
-  print(Output: file_name)
+	unique, counts = np.unique(labels, return_counts=True)
+	for u, c in zip(unique, counts):
+	    print(f"Kelas {u}: {c} gambar")
+	print(f"Total data: {len(data)} gambar")
 ```
 Output: Contoh Visualisasi Distribusi Data: 
 
