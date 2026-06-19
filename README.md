@@ -252,19 +252,27 @@ def generateClassificationReport(y_true, y_pred):
 	print('Accuracy:', accuracy_score(y_true, y_pred))
 ```
 Output: Contoh Classsification Report
-|               | Accuracy | Precision | Recall   | F1-Score |
-| ------------- | -------- | --------- | -------- | -------- |
-| KNN           | 0.948667 | 0.948664  | 0.948667 | 0.948504 |
-| SVM           | 0.976333 | 0.976319  | 0.976333 | 0.976333 |
-| Random Forest | 0.959667 | 0.959822  | 0.959667 | 0.959615 |
+```python
+
+```
 
 # Evaluation
 Pada bagian ini, Anda perlu mengevaluasi model klasifikasi yang telah Anda buat dengan menampilkan Confusion Matrix, dan Clasification Report: Accuracy, Precision, Recall, F1 Score. **Jelaskan hasil evaluasi yang Anda dapatkan dan berikan analisis mengenai hasil evaluasi tersebut**.
 
 ``` python
+def plot_confusion_matrix(y_true, y_pred, title):
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.title(title)
+    plt.show()
 
-def plot_confusion_matrix(dataset, dataset, title):
-  print(confusion_matrix)
+# Plot confusion matrix for Random Forest
+plot_confusion_matrix(y_test, rf.predict(X_test), "Random Forest Confusion Matrix")
+# Plot confusion matrix for SVM
+plot_confusion_matrix(y_test, svm.predict(X_test), "SVM Confusion Matrix")
+# Plot confusion matrix for KNN
+plot_confusion_matrix(y_test, knn.predict(X_test), "KNN Confusion Matrix")
 ```
 
 Output: Contoh Confusion Matrix
