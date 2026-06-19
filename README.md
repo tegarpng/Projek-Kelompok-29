@@ -174,25 +174,62 @@ def glcm(image, derajat):
 ```
 
 ## Feature Selection
-Pada tahap ini, Anda diminta untuk melakukan seleksi fitur. Anda dapat menggunakan teknik seleksi fitur seperti correlation, PCA, atau teknik seleksi fitur lain yang Anda ketahui. NAH PADA TEMPLATE CODE FEATURE SELECTION MENGGUNAKAN CORRELATION YGY.
+Seleksi fitur yang digunakan yaitu correlation dan t-SNE.
 ``` python
 correlation = hasilEkstrak.drop(columns=['Label','Filename']).corr()
-......
+
+# Menyaring fitur yang memiliki korelasi absolut lebih dari 0.95 dengan label
+threshold = 0.95 # atur threshold ini untuk menentukan seberapa besar korelasi yang ingin disaring
+selectionFeature = []
+columns = np.full((correlation.shape[0],), True, dtype=bool)
+for i in range(correlation.shape[0]):
+	for j in range(i+1, correlation.shape[0]):
+		if correlation.iloc[i,j] >= threshold:
+			if columns[j]:
+				columns[j] = False
+select = hasilEkstrak.drop(columns=['Label','Filename']).columns[columns]
+x_new = hasilEkstrak[select]
+x_new
+y = hasilEkstrak['Label']
+plt.figure(figsize=(17,17))
+sns.heatmap(x_new.corr(), annot=True, cmap='Blues', fmt=".2f")
+
+
+tsne = TSNE(n_components=2, perplexity=30, n_iter=1000, random_state=42)
+X_tsne = tsne.fit_transform(x_new)
+
+# Buat DataFrame hasil t-SNE
+df_tsne = pd.DataFrame()
+df_tsne['Dimensi-1'] = X_tsne[:, 0]
+df_tsne['Dimensi-2'] = X_tsne[:, 1]
+df_tsne['Label'] = y
+
+# Plot dengan seaborn
+plt.figure(figsize=(10, 8))
+sns.scatterplot(
+    x='Dimensi-1', y='Dimensi-2', hue='Label', data=df_tsne, palette='Set2', s=100
+)
+plt.title('Visualisasi t-SNE Data Citra')
+plt.legend(loc='best')
+plt.grid(True)
+plt.show()
 ```
 
 ## Splitting Data
-Pada tahap ini, Anda diminta untuk membagi data menjadi data training dan data testing. Anda dapat menggunakan perbandingan 80:20 atau 70:30 atau 90:10.
+Pada tahap ini, data dibagi menjadi data training dan data testing. Pada projek ini digunakan perbandingan 80:20.
 ``` python
-Dataset, Dataset, Dataset, Dataset = train_test_split(Dataset, y, test_size=0.2, random_state=42)
-print(Dataset.shape)
-print(Dataset.shape)
+X_train, X_test, y_train, y_test = train_test_split(x_new, y, test_size=0.2, random_state=42)
+print(X_train.shape)
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
 ```
 
 ## Normalization
-Pada tahap ini, Anda diminta untuk melakukan normalisasi data. Anda dapat menggunakan teknik normalisasi standarization atau min-max normalization.
+Pada tahap ini, dilakukan normalisasi data. Digunakan teknik normalisasi mean-std. Normalisasi ini dilakukan dengan mengurangi setiap nilai fitur dengan rata-rata training set (X_train.mean()) dan membaginya dengan standar deviasi training set (X_train.std()). Pentingnya metode ini adalah bahwa rata-rata dan standar deviasi hanya dihitung dari X_train dan kemudian diterapkan ke X_test, sebuah praktik yang mencegah data leakage dan memastikan integritas pengujian model.
 ``` python
-Dataset = (Dataset - Dataset.mean()) / Dataset.std()
-Dataset = (Dataset - Dataset.mean()) / Dataset.std()
+X_test = (X_test - X_train.mean()) / X_train.std()
+X_train = (X_train - X_train.mean()) / X_train.std()
 ```
 
 # Modeling
@@ -203,16 +240,19 @@ Berikut merupakan model yang digunakan:
 
 Gunakan akurasi sebagai metrik dalam menampilkan hasil klasifikasi.
 ```python
-# Train Random Forest Classifier
-rf.fit(dataset, dataset)
-# Train SVM Classifier
-svm.fit(dataset, dataset)
-# Train KNN Classifier
-knn.fit(dataset, dataset)
+def plot_confusion_matrix(y_true, y_pred, title):
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.title(title)
+    plt.show()
 
-def inidiaClassificationReport(dataset, dataset):
-	print(classification_report(dataset, dataset))
-
+# Plot confusion matrix for Random Forest
+plot_confusion_matrix(y_test, rf.predict(X_test), "Random Forest Confusion Matrix")
+# Plot confusion matrix for SVM
+plot_confusion_matrix(y_test, svm.predict(X_test), "SVM Confusion Matrix")
+# Plot confusion matrix for KNN
+plot_confusion_matrix(y_test, knn.predict(X_test), "KNN Confusion Matrix")
 ```
 Output: Contoh Classsification Report
 |               | Accuracy | Precision | Recall   | F1-Score |
